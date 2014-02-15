@@ -1,0 +1,117 @@
+<!--
+This code is property of SOFTWARE JOINT PVT. LTD. This code has been released under MIT License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="pankajsoni@softwarejoint.com">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Registration Link Expired</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/signin.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+  
+
+    <div class="container">
+     <span style="margin: 10px 0; display: block; color: #dd4b39; line-height: 18px;text-align: center;">Registration link has expired.<br/>Kindly register again.</span>
+      <form class="form-signin" role="form" name="signin" action="/login" onsubmit="return validateForm();"  method="post">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" spellcheck="false" class="form-control" name="uname" placeholder="UserName" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" name="passwd" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <a href="#" class="forgotpwd" style="float:right;padding-top:10px;font-size: 13px;">Can't access your account?</a>
+      </form>
+      <p style="text-align: center;margin-bottom: 20px;">
+      	<a href="/new_account" class="createacc">Create an account</a>
+      </p>
+    </div> <!-- /container -->
+    
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>    
+	<script src="/js/bootbox.min.js"></script>
+	<script src="/js/sha3.js"></script>
+    <script>
+		
+	function validateForm()
+		{
+			var name=document.forms["signin"]["uname"].value;
+			var pwd=document.forms["signin"]["passwd"].value;
+			if(name==""){
+				bootbox.alert("Username cannot be null",function() {}); 
+				return false;
+			}
+			if(pwd==""){
+				bootbox.alert("Password cannot be null",function() {}); 
+				return false;
+			}
+			var unamefilter =  /^([a-zA-Z0-9_\.\-])+$/;
+			if(!unamefilter.test(name)){
+				bootbox.alert("Username can contain only alphabets, numbers and underscore.",function() {});
+				document.forms["signin"]["uname"].value = "";
+				document.forms["signin"]["passwd"].value = "";
+				return false;
+			}
+			/*var pwdfilter = ((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20});*/
+			document.forms["signin"]["passwd"].value = CryptoJS.SHA3(pwd);
+			return true;		
+		}
+	</script>
+	<script>
+        $(document).on("click", ".forgotpwd", function(e) {
+				bootbox.prompt("Enter username to reset password:",function(result) { 
+					if (result == null || result.trim() == "") return true;
+					
+					var filter = /^[a-zA-Z0-9]+$/;
+					// email fileter: var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;      
+					if (!filter.test(result)) {
+						bootbox.alert("Username entered is invalid.", function() {});                     
+					}else{							
+						var xmlhttp;
+						if (window.XMLHttpRequest)
+						  {// code for IE7+, Firefox, Chrome, Opera, Safari
+						  xmlhttp=new XMLHttpRequest();
+						  }
+						else
+						  {// code for IE6, IE5
+						  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+						  }
+						xmlhttp.onreadystatechange=function()
+						 {
+						  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+							{
+								bootbox.alert("An email has been sent to your account with necessary details.<br/><br/>Kindly click the link in the email to reset password.<br/><br/>The email link would be valid for next 2 hours."  , function() {});                     
+							}
+						  if((xmlhttp.readyState==4 && xmlhttp.status == 412))
+						    {								
+								bootbox.alert("User does not exists in database.", function() {});                     
+							}
+						 }
+						var url="/reaquirepasswd?uname="+result;
+						xmlhttp.open("GET",url,true);
+						xmlhttp.send();
+					}						
+			});
+        });
+    </script>	
+  </body>
+</html>

@@ -1,0 +1,86 @@
+<!--
+This code is property of SOFTWARE JOINT PVT. LTD. This code has been released under MIT License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="pankajsoni@softwarejoint.com">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+	<title>Reset Password</title>
+	  <!-- Stylesheets -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/signin.css" rel="stylesheet">
+	
+	</head>
+	  <body>
+			<div class="signin-box" style="margin-top: 100px;margin-left: 300px;">
+			<fieldset style="width: 800px;">
+			  <legend><h2>Set new password</h2></legend>
+				<form name="reset" action="/login/reset" onsubmit="return validateForm();" method="POST"> 
+					<span style="margin: .5em 0 0; display: block; color: #dd4b39; line-height: 17px;">
+					  * Password should be more than 6 characters with at least one numeric digit, one UpperCase letter and one LowerCase letter.
+					</span>					
+					<br/>
+					<div>
+					  <label>Enter new password</label>
+					  <input type="password" name="passwd">
+					</div>
+					<div>
+					  <label>Confirm password</label>
+					  <input type="password" name="passwd1">
+					</div>
+
+				  <ul style="overflow-x:hidden;padding:0; margin:0;width: 100%;">
+					  <li style="list-style-type: none; display:inline;">
+						<input type="submit"  value="Submit">
+					  </li>
+				  </ul>  
+			  </form>		  
+			  </fieldset>
+			</div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>    
+	<script src="/js/bootbox.js"></script>
+	<script src="/js/sha3.js"></script>
+	<script>
+	function validateForm()
+		{	
+			var pwd=document.forms["reset"]["passwd"].value;
+			var pwd1=document.forms["reset"]["passwd1"].value;
+			if(pwd==""){
+				bootbox.alert("Password field cannot be empty.",function() {}); 
+				return false;
+			}
+			if(pwd1==""){
+				bootbox.alert("Password field cannot be empty.",function() {}); 
+				return false;
+			}
+			if(pwd.length <6){
+				bootbox.alert("Minimum password length should be 6.",function() {}); 
+				return false;
+			}
+			var passwfilter = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+			if(!passwfilter.test(pwd)){
+				bootbox.alert("Password should have 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter.",function() {});
+				document.forms["reset"]["passwd"].value = "";
+				document.forms["reset"]["passwd1"].value = "";
+				return false;
+			}
+			if(pwd!=pwd1){
+				bootbox.alert("Passwords do not match.",function() {}); 
+				document.forms["reset"]["passwd1"].value = "";
+				return false;
+			}
+			/*var pwdfilter = ((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20});*/
+			document.forms["reset"]["passwd"].value = CryptoJS.SHA3(pwd);
+			document.forms["reset"]["passwd1"].value = window.location.search;
+			return true;		
+		}
+	</script>	
+	</body>
+ </html>

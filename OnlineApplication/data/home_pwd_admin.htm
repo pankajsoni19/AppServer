@@ -1,0 +1,123 @@
+<!--
+This code is property of SOFTWARE JOINT PVT. LTD. This code has been released under MIT License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="pankajsoni@softwarejoint.com">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Change Password</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/signin.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Candidate HomePage</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Log Out</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/admin">Admin Op Center</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Change Password</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Set new password</h1>
+
+          <div class="row placeholders">
+           <div class="signin-box">
+			<fieldset style="max-width:330px">
+				<form class="form-signin" role="form" name="update_pwd" action="/home/change_password" onsubmit="return validateForm();"  method="post">
+		        <input type="password" class="form-control" placeholder="Password" name="passwd" required autofocus/>
+		        <input type="password" class="form-control" placeholder="Re-enter Password" name="passwd2" required/>
+		        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+		      </form>	  
+			  </fieldset>
+			</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/docs.min.js"></script>
+    <script src="/js/sha3.js"></script>  
+	<script src="/js/bootbox.js"></script>
+    <script>
+	function validateForm()
+		{	
+			var pwd=document.forms["update_pwd"]["passwd"].value;
+			var pwd1=document.forms["update_pwd"]["passwd2"].value;
+			if(pwd==""){
+				bootbox.alert("Password field cannot be empty.",function() {}); 
+				return false;
+			}
+			if(pwd1==""){
+				bootbox.alert("Password field cannot be empty.",function() {}); 
+				return false;
+			}
+			if(pwd.length <6){
+				bootbox.alert("Minimum password length should be 6.",function() {}); 
+				return false;
+			}
+			var passwfilter = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+			if(!passwfilter.test(pwd)){
+				bootbox.alert("Password should have 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter.",function() {});
+				document.forms["update_pwd"]["passwd"].value = "";
+				document.forms["update_pwd"]["passwd2"].value = "";
+				return false;
+			}
+			if(pwd!=pwd1){
+				bootbox.alert("Passwords do not match.",function() {}); 
+				document.forms["update_pwd"]["passwd2"].value = "";
+				return false;
+			}
+			/*var pwdfilter = ((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20});*/
+			document.forms["update_pwd"]["passwd"].value = CryptoJS.SHA3(pwd);
+			document.forms["update_pwd"]["passwd2"].value = "";
+			return true;		
+		}
+	</script>
+  </body>
+</html>

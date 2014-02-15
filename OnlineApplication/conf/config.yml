@@ -1,0 +1,32 @@
+/** Cassandra node **/
+casshost : 192.168.1.42
+cassport : 9042
+cassuname : pooja
+casspwd: pooja
+
+/*Server Settings*/
+httpport : 80
+maximum_backlog : 10
+image_store_dir : D:/Softwares/workspace-official/OnlineApplication
+max_thread_pool_size : 128
+
+/* For file upload by admin: http://host:port/admin/file_upload_url_key/upload_data */
+/* ex: http://192.168.1.42/admin/5bd1e534-5a08-40ba-a7e3-6a0f568e0f28-5e3a3ec6-7edc-495b-8947-da003b12b8c4 */ 
+
+file_upload_url_key : 5bd1e534-5a08-40ba-a7e3-6a0f568e0f28-5e3a3ec6-7edc-495b-8947-da003b12b8c4
+
+/*https settings*/
+https_server : false
+httpsport: 443
+cert_store : school.jks
+cert_password : rootpass
+
+/*expirty time in milliseconds */
+cookie_expiry_time : 600000
+password_reset_link_expiry_time : 7200000
+registration_reset_link_expiry_time : 86400000
+
+/*Email settings*/
+email_username : 
+email_pwd :
+email_from_addr : 
