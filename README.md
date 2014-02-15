@@ -14,6 +14,8 @@ This has examples for smtp mail sending, talking to cassandra in CQL V3, working
 
 The settings are in conf folder and it uses logger to log comments.
 
-Main class is in bootup.java (there is graceful shutdown, if needed).W
+Main class is in bootup.java (there is graceful shutdown, if needed).
 
 As this is a demo for server load capability, I have not updated all the html files with all menu options, neither condensed them.
+
+Any applications here, have not been tested in actual production environment, the developer or company will not be liable for any damage caused by their use.
